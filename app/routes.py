@@ -2,8 +2,8 @@ from app import app
 
 
 @app.route('/')
-@app.route('index')
-@app.route('prediction')
+@app.route('/index')
+@app.route('/prediction')
 def index():
     return "Prediction page"
 
