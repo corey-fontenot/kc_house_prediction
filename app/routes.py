@@ -6,22 +6,22 @@ from app import app
 @app.route('/index')
 @app.route('/prediction')
 def index():
-    return render_template('base.html')
+    return render_template('index.html')
 
 
 @app.route('/dashboard')
 def dashboard():
-    return "Dashboard page"
+    return render_template('dashboard.html')
 
 
 @app.route('/login')
 def login():
-    return "Login page"
+    return render_template('login.html')
 
 
 @app.route('/register')
 def register():
-    return "Register page"
+    return render_template('register.html')
 
 
 @app.route('/logout')
