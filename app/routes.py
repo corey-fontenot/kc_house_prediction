@@ -1,3 +1,4 @@
+from flask import render_template
 from app import app
 
 
@@ -5,7 +6,7 @@ from app import app
 @app.route('/index')
 @app.route('/prediction')
 def index():
-    return "Prediction page"
+    return render_template('base.html')
 
 
 @app.route('/dashboard')
