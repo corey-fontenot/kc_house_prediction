@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, RegisterForm
 
 
 @app.route('/')
@@ -24,9 +24,13 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html')
+    form = RegisterForm()
+    if form.validate_on_submit():
+        flash('Registration successful for user {}'.format(form.username.data))
+        return redirect('/login')
+    return render_template('register.html', title='Register', form=form)
 
 
 @app.route('/logout')
