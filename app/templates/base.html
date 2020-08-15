@@ -31,6 +31,21 @@
       </div>
     </nav>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="row">
+        {% for message in messages %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert" style="display: inline-block">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <div class="container">
         {% block content %}{% endblock %}
     </div>
