@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app
+from app import app, db
 from app.forms import LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
+import datetime
 
 
 @app.route('/')
@@ -48,10 +49,30 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
+    # if user is already logged in, redirect them to the dashboard page
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+
     form = RegisterForm()
+
+    # if form validates, create new user and insert into the database
     if form.validate_on_submit():
+        cur_date = str(datetime.datetime.now())
+        user = User()
+        user.username = form.username.data
+        user.created_on = cur_date
+        user.last_login = cur_date
+        user.set_password(form.password.data)
+
+        db.session.add(user)
+        db.session.commit()
+
         flash('Registration successful for user {}'.format(form.username.data))
-        return redirect('/login')
+
+        # redirect to the login page so new user can log in
+        return redirect(url_for('login'))
+
     return render_template('register.html', title='Register', form=form)
 
 
