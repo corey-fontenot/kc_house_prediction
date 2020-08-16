@@ -36,6 +36,10 @@ def login():
             return redirect(url_for('login', error=True))
         login_user(user)
 
+        # update last_login column for user
+        current_user.last_login = str(datetime.datetime.now())
+        db.session.commit()
+
         # sets page to load after being logged in
         next_page = request.args.get('next')
 
