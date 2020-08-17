@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, EstimateForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
@@ -11,7 +11,12 @@ import datetime
 @app.route('/index')
 @app.route('/prediction')
 def index():
-    return render_template('index.html')
+    form = EstimateForm()
+
+    if form.validate_on_submit():
+        return redirect(url_for('dashboard'))
+
+    return render_template('index.html', title="Home Price Estimator", form=form)
 
 
 @app.route('/dashboard')
