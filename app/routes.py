@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegisterForm, EstimateForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Estimate
 from werkzeug.urls import url_parse
 import datetime
 import pickle
@@ -36,7 +36,7 @@ def index():
             'waterfront': form.waterfront.data,
             'view': form.view.data,
             'zipcode': form.zipcode.data,
-            'result': "${:.2f}".format(result[0])
+            'result': "${:}".format(int(result[0]))
         }
         return render_template('results.html', title="Results", result=result)
 
@@ -47,10 +47,12 @@ def index():
 def results():
     pass
 
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    estimates = Estimate.query.filter_by(user_id=current_user.id)
+    return render_template('dashboard.html', estimates=estimates)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -121,6 +123,23 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/analysis')
-def analysis():
-    return render_template('analysis.html', title='Analysis')
+@app.route('/save_estimate', methods=['GET', 'POST'])
+def save_estimate():
+
+    estimate = Estimate()
+    estimate.date = datetime.date.today()
+    estimate.user_id = current_user.id
+    estimate.bedrooms = request.args.get('bedrooms')
+    estimate.bathrooms = request.args.get('bathrooms')
+    estimate.floors = request.args.get('floors')
+    estimate.zipcode = request.args.get('zipcode')
+    estimate.view = True if request.args.get('view') == 'True' else False
+    estimate.waterfront = True if request.args.get('waterfront') == 'True' else False
+    estimate.price = int(request.args.get('price')[1:])
+
+    db.session.add(estimate)
+    db.session.commit()
+
+    flash("Your estimate has been saved")
+
+    return redirect(url_for('dashboard'))

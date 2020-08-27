@@ -24,3 +24,16 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
+
+class Estimate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    user = db.relationship('User', backref=db.backref('users', lazy=True))
+    bedrooms = db.Column(db.Integer, nullable=False)
+    bathrooms = db.Column(db.Integer, nullable=False)
+    floors = db.Column(db.Integer, nullable=False)
+    zipcode = db.Column(db.String, nullable=False)
+    waterfront = db.Column(db.Boolean, nullable=False)
+    view = db.Column(db.Boolean, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
