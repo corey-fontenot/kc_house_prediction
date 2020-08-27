@@ -2,15 +2,15 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import r2_score,mean_squared_error
 import matplotlib.pyplot as plt
+import pickle
 
 data = pd.read_csv("kc_house_data.csv")
 
 data.dropna()
 
-data['date'] = data['date'].apply(pd.to_datetime).astype('int64')
-data = data.drop(columns=['id', 'sqft_living', 'sqft_lot', 'condition', 'grade', 'sqft_above', 'sqft_basement',
+#data['date'] = data['date'].apply(pd.to_datetime).astype('int64')
+data = data.drop(columns=['id', 'date', 'sqft_living', 'sqft_lot', 'condition', 'grade', 'sqft_above', 'sqft_basement',
                           'yr_renovated', 'yr_built', 'lat', 'long', 'sqft_living15', 'sqft_lot15'], axis=1)
 
 x = data.drop('price', axis=1)
@@ -38,3 +38,7 @@ plt.plot(df_pred_actual_sample['actual'], label='Actual')
 plt.ylabel('Price')
 plt.legend()
 plt.savefig("app/static/img/rf_pred_actual")
+
+filename = "rf_reg.pkl"
+with open(filename, 'wb') as file:
+    pickle.dump(rf, file)

@@ -26,20 +26,15 @@ class RegisterForm(FlaskForm):
             raise ValidationError('Username already taken')
 
 
-def integer_check(form, field):
-    if not isinstance(field.data, int):
-        raise ValidationError(field.label + " must be an integer")
-
-
 class EstimateForm(FlaskForm):
 
     # define form fields
-    bedrooms = IntegerField('Bedrooms', validators=[DataRequired(), integer_check])
-    bathrooms = IntegerField('Bathrooms', validators=[DataRequired(), integer_check])
+    bedrooms = IntegerField('Bedrooms', validators=[DataRequired()])
+    bathrooms = IntegerField('Bathrooms', validators=[DataRequired()])
     floors = IntegerField('Floors', validators=[DataRequired()])
-    waterfront = BooleanField('Waterfront')
-    view = BooleanField('View')
-    zipcode = SelectField('Zipcode', choices=Config.ZIPCODES)
+    waterfront = BooleanField('Waterfront', validators=None)
+    view = BooleanField('View', validators=None)
+    zipcode = SelectField('Zipcode', validators=None, choices=Config.ZIPCODES, coerce=int)
     submit = SubmitField("Estimate Price")
 
 

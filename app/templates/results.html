@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>Results</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Your Results</h5>
+                    <br>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>Bedrooms</td>
+                                <td>{{ result.bedrooms }}</td>
+                            </tr>
+                            <tr>
+                                <td>Bathrooms</td>
+                                <td>{{ result.bathrooms }}</td>
+                            </tr>
+                            <tr>
+                                <td>Floors</td>
+                                <td>{{ result.floors }}</td>
+                            </tr>
+                            <tr>
+                                <td>Zipcode</td>
+                                <td>{{ result.zipcode }}</td>
+                            </tr>
+                            <tr>
+                                <td>Waterfront</td>
+                                <td>
+                                    {% if result.waterfront %} Yes
+                                    {% else %} No
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>View</td>
+                                <td>
+                                    {% if result.view %} Yes
+                                    {% else %} No
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr class="text-primary font-weight-bold">
+                                <td><h3>Price</h3></td>
+                                <td><h3>{{ result.result }}</h3></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <br>
+            </div>
+        </div>
+    </div>
+{% endblock %}

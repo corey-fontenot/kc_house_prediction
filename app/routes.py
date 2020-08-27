@@ -5,19 +5,47 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
 import datetime
+import pickle
 
 
-@app.route('/')
-@app.route('/index')
-@app.route('/prediction')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
-    form = EstimateForm()
+    form = EstimateForm(request.form)
 
     if form.validate_on_submit():
-        return redirect(url_for('dashboard'))
+        filename = "rf_reg.pkl"
+        input_data = [
+            [
+                form.bedrooms.data,
+                form.bathrooms.data,
+                form.floors.data,
+                form.waterfront.data,
+                form.view.data,
+                form.zipcode.data
+            ]
+        ]
+        with open(filename, 'rb') as file:
+            rf_reg_model = pickle.load(file)
+            result = rf_reg_model.predict(input_data)
+
+        result = {
+            'bedrooms': form.bedrooms.data,
+            'bathrooms': form.bathrooms.data,
+            'floors': form.floors.data,
+            'waterfront': form.waterfront.data,
+            'view': form.view.data,
+            'zipcode': form.zipcode.data,
+            'result': "${:.2f}".format(result[0])
+        }
+        return render_template('results.html', title="Results", result=result)
 
     return render_template('index.html', title="Home Price Estimator", form=form)
 
+
+@app.route('/results')
+def results():
+    pass
 
 @app.route('/dashboard')
 @login_required
@@ -91,3 +119,8 @@ def logout():
     logout_user()
     flash('You have been successfully logged out')
     return redirect(url_for('login'))
+
+
+@app.route('/analysis')
+def analysis():
+    return render_template('analysis.html', title='Analysis')
