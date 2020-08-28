@@ -9,9 +9,9 @@
 </div>
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <table class="table table-borderless">
-            <thead>
-                <tr>
+        <table class="table table-borderless table-striped">
+            <thead class="bg-primary">
+                <tr class="text-light">
                     <th scope="col">Date</th>
                     <th scope="col">Bedrooms</th>
                     <th scope="col">Bathrooms</th>
@@ -24,7 +24,7 @@
             </thead>
             <tbody>
             {% for estimate in estimates %}
-                <tr class="clickable-row"
+                <tr class="clickable-row" style="cursor: pointer;"
                     data-href="{{ url_for('results', estimate_id=estimate.id)}}">
                     <td>{{ estimate.date }}</td>
                     <td>{{ estimate.bedrooms }}</td>
