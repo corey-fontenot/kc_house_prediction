@@ -14,8 +14,8 @@ def index():
     form = EstimateForm(request.form)
 
     if form.validate_on_submit():
-        filename = "rf_reg.pkl"
-        input_data = [
+        filename = "rf_reg.pkl"  # filename containing the random forest regression prediction model
+        input_data = [  # data to be passed to the prediction model
             [
                 form.bedrooms.data,
                 form.bathrooms.data,
@@ -26,10 +26,10 @@ def index():
             ]
         ]
         with open(filename, 'rb') as file:
-            rf_reg_model = pickle.load(file)
-            result = rf_reg_model.predict(input_data)
+            rf_reg_model = pickle.load(file)  # load the random forest regression model
+            result = rf_reg_model.predict(input_data)  # result of passing input data to the prediction model
 
-        result = {
+        result = {  # data to be passed to results.html to be displayed
             'bedrooms': form.bedrooms.data,
             'bathrooms': form.bathrooms.data,
             'floors': form.floors.data,
@@ -38,25 +38,26 @@ def index():
             'zipcode': form.zipcode.data,
             'price': "${:}".format(int(result[0]))
         }
-        return render_template('results.html', title="Results", result=result)
+        return render_template('results.html', title="Results", result=result)  # load results page
 
-    return render_template('index.html', title="Home Price Estimator", form=form)
+    return render_template('index.html', title="Home Price Estimator", form=form)  # load index page
 
 
 @app.route('/results/<estimate_id>')
 @login_required
 def results(estimate_id):
 
+    # load prediction result from the database
     result = Estimate.query.filter_by(id=estimate_id).first()
 
-    return render_template('results.html', result=result)
+    return render_template('results.html', result=result)  # load results page
 
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    estimates = Estimate.query.filter_by(user_id=current_user.id)
-    return render_template('dashboard.html', estimates=estimates)
+    user_estimates = Estimate.query.filter_by(user_id=current_user.id)  # load user's estimates
+    return render_template('dashboard.html', estimates=user_estimates)  # load estimates page
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -87,7 +88,7 @@ def login():
             next_page = url_for('estimates')
         flash('You have successfully logged in')
         return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', title='Sign In', form=form)  # load login page
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -114,9 +115,9 @@ def register():
         flash('Registration successful for user {}'.format(form.username.data))
 
         # redirect to the login page so new user can log in
-        return redirect(url_for('login'))
+        return redirect(url_for('login'))  # load login page
 
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form)  # load register page
 
 
 # logs user out then redirects to the login page
@@ -127,6 +128,7 @@ def logout():
     return redirect(url_for('login'))
 
 
+# saves a user's estimate to the database
 @app.route('/save_estimate', methods=['GET', 'POST'])
 def save_estimate():
 
@@ -146,11 +148,12 @@ def save_estimate():
 
     flash("Your estimate has been saved")
 
-    return redirect(url_for('estimates'))
+    return redirect(url_for('estimates'))  # load estimates page
 
 
+# display a user's estimates
 @app.route('/estimates')
 @login_required
 def estimates():
-    user_estimates = Estimate.query.filter_by(user_id=current_user.id)
-    return render_template('estimates.html', estimates=user_estimates)
+    user_estimates = Estimate.query.filter_by(user_id=current_user.id)  # load user's estimates from the database
+    return render_template('estimates.html', estimates=user_estimates)  # load estimates page
