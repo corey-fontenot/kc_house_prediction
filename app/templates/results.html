@@ -48,10 +48,23 @@
                             </tr>
                             <tr class="text-primary font-weight-bold">
                                 <td><h3>Price</h3></td>
-                                <td><h3>{{ result.result }}</h3></td>
+                                <td><h3>{{ result.price }}</h3></td>
                             </tr>
                         </tbody>
                     </table>
+                    {% if current_user.is_anonymous %}
+                        <p>You must be logged in to save your results</p>
+                    {% elif result.id %}
+                        <a href="{{ url_for('estimates') }}">
+                            <button class="btn btn-primary">Back</button>
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('save_estimate', bedrooms=result.bedrooms, bathrooms=result.bathrooms,
+                                floors=result.floors, zipcode=result.zipcode, view=result.view, waterfront=result.waterfront,
+                                price=result.result) }}">
+                            <button class="btn btn-primary">Save Results</button>
+                        </a>
+                    {% endif %}
                 </div>
             <br>
             </div>

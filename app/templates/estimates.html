@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% set active_page = "estimates" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1>Estimates for {{ current_user.username }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Bedrooms</th>
+                    <th scope="col">Bathrooms</th>
+                    <th scope="col">Floors</th>
+                    <th scope="col">Waterfront</th>
+                    <th scope="col">View</th>
+                    <th scope="col">Zipcode</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for estimate in estimates %}
+                <tr class="clickable-row"
+                    data-href="{{ url_for('results', estimate_id=estimate.id)}}">
+                    <td>{{ estimate.date }}</td>
+                    <td>{{ estimate.bedrooms }}</td>
+                    <td>{{ estimate.bathrooms }}</td>
+                    <td>{{ estimate.floors }}</td>
+                    <td>{{ estimate.waterfront }}</td>
+                    <td>{{ estimate.view }}</td>
+                    <td>{{ estimate.zipcode }}</td>
+                    <td>{{ estimate.price }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

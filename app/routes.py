@@ -36,16 +36,20 @@ def index():
             'waterfront': form.waterfront.data,
             'view': form.view.data,
             'zipcode': form.zipcode.data,
-            'result': "${:}".format(int(result[0]))
+            'price': "${:}".format(int(result[0]))
         }
         return render_template('results.html', title="Results", result=result)
 
     return render_template('index.html', title="Home Price Estimator", form=form)
 
 
-@app.route('/results')
-def results():
-    pass
+@app.route('/results/<estimate_id>')
+@login_required
+def results(estimate_id):
+
+    result = Estimate.query.filter_by(id=estimate_id).first()
+
+    return render_template('results.html', result=result)
 
 
 @app.route('/dashboard')
@@ -58,9 +62,9 @@ def dashboard():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-    # if user is already logged in they are redirected to the dashboard page
+    # if user is already logged in they are redirected to the estimates page
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('estimates'))
     form = LoginForm()
 
     # if form data is valid and username/password are correct the user is logged in
@@ -80,7 +84,7 @@ def login():
 
         # Sets page to dashboard if a page is not specified or url is not relative
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('dashboard')
+            next_page = url_for('estimates')
         flash('You have successfully logged in')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
@@ -142,4 +146,11 @@ def save_estimate():
 
     flash("Your estimate has been saved")
 
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('estimates'))
+
+
+@app.route('/estimates')
+@login_required
+def estimates():
+    user_estimates = Estimate.query.filter_by(user_id=current_user.id)
+    return render_template('estimates.html', estimates=user_estimates)
