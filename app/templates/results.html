@@ -58,6 +58,9 @@
                         <a href="{{ url_for('estimates') }}">
                             <button class="btn btn-primary">Back</button>
                         </a>
+                        <a href="{{ url_for('delete_estimate', estimate_id=result.id) }}">
+                            <button class="btn btn-danger">Delete Estimate</button>
+                        </a>
                     {% else %}
                         <a href="{{ url_for('save_estimate', bedrooms=result.bedrooms, bathrooms=result.bathrooms,
                                 floors=result.floors, zipcode=result.zipcode, view=result.view, waterfront=result.waterfront,

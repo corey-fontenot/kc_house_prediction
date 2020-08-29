@@ -151,6 +151,18 @@ def save_estimate():
     return redirect(url_for('estimates'))  # load estimates page
 
 
+@app.route('/delete_estimate', methods=['POST', 'GET'])
+def delete_estimate():
+    doomed_estimate = Estimate.query.filter_by(id=request.args.get('estimate_id')).first()
+
+    db.session.delete(doomed_estimate)  # delete estimate from the database
+    db.session.commit()
+
+    flash('Estimate has been successfully deleted')  # confirmation message to the user
+
+    return redirect(url_for('estimates'))  # load estimates page
+
+
 # display a user's estimates
 @app.route('/estimates')
 @login_required
