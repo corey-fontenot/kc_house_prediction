@@ -56,8 +56,10 @@ def results(estimate_id):
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    user_estimates = Estimate.query.filter_by(user_id=current_user.id)  # load user's estimates
-    return render_template('dashboard.html', estimates=user_estimates)  # load estimates page
+    if not current_user.is_admin:
+        return redirect(url_for('estimates'))
+
+    return render_template('dashboard.html', title='Dashboard')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -85,7 +87,10 @@ def login():
 
         # Sets page to dashboard if a page is not specified or url is not relative
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('estimates')
+            if current_user.is_admin:
+                next_page = 'dashboard'
+            else:
+                next_page = url_for('estimates')
         flash('You have successfully logged in')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)  # load login page

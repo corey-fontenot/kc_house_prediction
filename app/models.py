@@ -9,6 +9,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     created_on = db.Column(db.DateTime)
     last_login = db.Column(db.DateTime)
+    is_admin = db.Column(db.Boolean, default='False', nullable=False)
+    estimates = db.relationship('Estimate', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}'.format(self.username)
@@ -29,7 +31,6 @@ class Estimate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    user = db.relationship('User', backref=db.backref('users', lazy=True))
     bedrooms = db.Column(db.Integer, nullable=False)
     bathrooms = db.Column(db.Integer, nullable=False)
     floors = db.Column(db.Integer, nullable=False)
@@ -37,3 +38,4 @@ class Estimate(db.Model):
     waterfront = db.Column(db.Boolean, nullable=False)
     view = db.Column(db.Boolean, nullable=False)
     price = db.Column(db.Integer, nullable=False)
+

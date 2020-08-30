@@ -1,5 +1,41 @@
 {% extends 'base.html' %}
+{% set active_page = 'dashboard' %}
 
 {% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1>Dashboard</h1>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 offset-md-1 border border-light rounded shadow-sm">
+        <h2>Data</h2>
+        <select>
+            <option value="pca">PCA</option>
+            <option value="rfreg">Random Forest Regression</option>
+        </select>
+    </div>
+    <div class="col-md-4 offset-md-1 border border-light rounded shadow-sm">
+        <h2>Visualizations</h2>
+        <select id="img-select">
+            <option value="heatmap" selected>heatmap</option>
+            <option value="pca">PCA</option>
+            <option value="prediction-actual">Prediction vs Actual</option>
+            <option value="prediction-scatter">Prediction Scatterplot</option>
+        </select>
+        <img src="{{ url_for('static', filename='img/heatmap.png') }}" class="img-fluid hideable" id="heatmap">
+        <img src="{{ url_for('static', filename='img/pca.png') }}" class="img-fluid hideable" style="display: none;" id="pca">
+        <img src="{{ url_for('static', filename='img/rf_pred_actual.png') }}" class="img-fluid hideable" style="display:none;" id="prediction-actual">
+        <img src="{{ url_for('static', filename='img/rf_reg_scatter.png') }}" class="img-fluid hideable" style="display:none;" id="prediction-scatter">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 offset-md-1">
 
+    </div>
+    <div class="col-md-4 offset-md-1">
+
+    </div>
+</div>
 {% endblock %}
