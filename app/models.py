@@ -39,3 +39,8 @@ class Estimate(db.Model):
     view = db.Column(db.Boolean, nullable=False)
     price = db.Column(db.Integer, nullable=False)
 
+
+class DataModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, index=True, nullable=False)
+    model = db.Column(db.PickleType, nullable=False)
