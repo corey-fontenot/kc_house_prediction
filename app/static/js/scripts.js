@@ -10,7 +10,7 @@ $(document).ready(function() {
 $("#img-select").change(function() {
     $(".hideable").css("display", "none");
 
-    selected_option = $(this).children("option:selected").val();
+    let selected_option = $(this).children("option:selected").val();
 
     $("#" + selected_option).css("display", "block");
 });
