@@ -2,10 +2,9 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegisterForm, EstimateForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Estimate
+from app.models import User, Estimate, DataModel
 from werkzeug.urls import url_parse
 import datetime
-import pickle
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,9 +24,9 @@ def index():
                 form.zipcode.data
             ]
         ]
-        with open(filename, 'rb') as file:
-            rf_reg_model = pickle.load(file)  # load the random forest regression model
-            result = rf_reg_model.predict(input_data)  # result of passing input data to the prediction model
+
+        rf_model = DataModel.query.filter_by(name='rf_regression').first().model
+        result = rf_model.predict(input_data)
 
         result = {  # data to be passed to results.html to be displayed
             'bedrooms': form.bedrooms.data,
