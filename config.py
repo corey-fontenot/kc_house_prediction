@@ -27,3 +27,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ZIPCODES = get_zipcodes()
     HOUSE_DATA = pd.read_csv('cleaned_data.csv')
+    ITEMS_PER_PAGE = 50

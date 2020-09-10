@@ -71,10 +71,16 @@ def dashboard():
         'pc2_explained_variance': "{:.3f}".format(expl_variance_ratio[1])
     }
 
-    house_data = HouseData.query.order_by(HouseData.price).all()
+    page = request.args.get('page', 1, type=int)
+    house_data = HouseData.query.order_by(HouseData.price).paginate(page, app.config['ITEMS_PER_PAGE'], False)
+
+    next_url = url_for('dashboard', page=house_data.next_num)
+    prev_url = url_for('dashboard', page=house_data.prev_num)
+    print(next_url)
 
     return render_template('dashboard.html', title='Dashboard', rf_data=rf_data, pca_data=pca_data,
-                           house_data=house_data)
+                           house_data=house_data.items, next_url=next_url, prev_url=prev_url,
+                           has_next=house_data.has_next, has_prev=house_data.has_prev)
 
 
 @app.route('/login', methods=['GET', 'POST'])

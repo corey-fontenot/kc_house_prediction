@@ -10,7 +10,8 @@
 </div>
 <div class="row">
     <div class="col-md-4 offset-md-1 border border-light rounded shadow-sm">
-        <h2>Data</h2>
+        <h2 class="text-center">Data</h2>
+        <br>
         <select id="data-select">
             <option value="pca_data" selected>PCA Data</option>
             <option value="rf_reg_data">Random Forest Regression</option>
@@ -48,7 +49,8 @@
         </div>
     </div>
     <div class="col-md-4 offset-md-1 border border-light rounded shadow-sm" id="visualizations">
-        <h2>Visualizations</h2>
+        <h2 class="text-center">Visualizations</h2>
+        <br>
         <select id="img-select">
             <option value="heatmap" selected>heatmap</option>
             <option value="pca">PCA</option>
@@ -63,7 +65,8 @@
 </div>
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h3>Dataset</h3>
+        <br>
+        <h3 class="text-center">Dataset</h3>
         <br>
         <table class="table table-borderless table-striped">
             <thead>
@@ -89,6 +92,12 @@
             {% endfor %}
             </tbody>
         </table>
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if not has_prev %} disabled {% endif %}"><a class="page-link" href="{{ prev_url }}">Previous</a></li>
+                <li class="page-item {% if not has_next %} disabled {% endif %}"><a class="page-link" href="{{ next_url }}">Next</a></li>
+            </ul>
+        </nav>
     </div>
 </div>
 {% endblock %}
