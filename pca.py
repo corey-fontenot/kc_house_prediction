@@ -19,10 +19,3 @@ def generate_pca_model():
 
     return pca
 
-
-# plt.figure(figsize=(8,6))
-# plt.scatter(x_pca[:,0], x_pca[:,1], c=data['price'], cmap='rainbow')
-# plt.xlabel('First Principal Component')
-# plt.ylabel('Second Principal Component')
-#
-# plt.savefig("app/static/img/pca.png")
