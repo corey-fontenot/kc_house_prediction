@@ -9,7 +9,7 @@
 </div>
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <table class="table table-borderless table-striped">
+        <table class="table table-borderless table-striped table-responsive table-hover">
             <thead class="bg-primary">
                 <tr class="text-light">
                     <th scope="col">Date</th>
@@ -33,7 +33,7 @@
                     <td>{{ estimate.waterfront }}</td>
                     <td>{{ estimate.view }}</td>
                     <td>{{ estimate.zipcode }}</td>
-                    <td>{{ estimate.price }}</td>
+                    <td>${{ estimate.price }}</td>
                 </tr>
             {% endfor %}
             </tbody>
