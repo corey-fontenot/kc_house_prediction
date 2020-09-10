@@ -8,7 +8,15 @@ $(document).ready(function() {
 });
 
 $("#img-select").change(function() {
-    $(".hideable").css("display", "none");
+    $(".vis-img").css("display", "none");
+
+    let selected_option = $(this).children("option:selected").val();
+
+    $("#" + selected_option).css("display", "block");
+});
+
+$("#data-select").change(function() {
+    $(".data-div").css("display", "none");
 
     let selected_option = $(this).children("option:selected").val();
 

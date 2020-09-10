@@ -11,12 +11,43 @@
 <div class="row">
     <div class="col-md-4 offset-md-1 border border-light rounded shadow-sm">
         <h2>Data</h2>
-        <select>
-            <option value="pca">PCA</option>
-            <option value="rfreg">Random Forest Regression</option>
+        <select id="data-select">
+            <option value="pca_data" selected>PCA Data</option>
+            <option value="rf_reg_data">Random Forest Regression</option>
         </select>
+        <br>
+        <div id="rf_reg_data" class="hideable data-div" style="display: none">
+            <table class="table table-borderless table-striped">
+                <tr>
+                    <td>R2 Score</td>
+                    <td>{{ rf_data.r2_score }}</td>
+                </tr>
+                <tr>
+                    <td>Mean Absolute Error</td>
+                    <td>{{ rf_data.mean_absolute_error }}</td>
+                </tr>
+                <tr>
+                    <td>Mean Squared Error</td>
+                    <td>{{ rf_data.mean_squared_error }}</td>
+                </tr>
+            </table>
+            <br>
+        </div>
+        <div id="pca_data" class="hideable data-div">
+            <table class="table table-borderless table-striped">
+                <tr>
+                    <td>Variance Ratio (PC1)</td>
+                    <td>{{ pca_data.pc1_explained_variance }}</td>
+                </tr>
+                <tr>
+                    <td>Variance Ratio (PC2)</td>
+                    <td>{{ pca_data.pc2_explained_variance }}</td>
+                </tr>
+            </table>
+            <br>
+        </div>
     </div>
-    <div class="col-md-4 offset-md-1 border border-light rounded shadow-sm">
+    <div class="col-md-4 offset-md-1 border border-light rounded shadow-sm" id="visualizations">
         <h2>Visualizations</h2>
         <select id="img-select">
             <option value="heatmap" selected>heatmap</option>
@@ -24,18 +55,40 @@
             <option value="prediction-actual">Prediction vs Actual</option>
             <option value="prediction-scatter">Prediction Scatterplot</option>
         </select>
-        <img src="{{ url_for('static', filename='img/heatmap.png') }}" class="img-fluid hideable" id="heatmap">
-        <img src="{{ url_for('static', filename='img/pca.png') }}" class="img-fluid hideable" style="display: none;" id="pca">
-        <img src="{{ url_for('static', filename='img/rf_pred_actual.png') }}" class="img-fluid hideable" style="display:none;" id="prediction-actual">
-        <img src="{{ url_for('static', filename='img/rf_reg_scatter.png') }}" class="img-fluid hideable" style="display:none;" id="prediction-scatter">
+        <img src="{{ url_for('static', filename='img/heatmap.png') }}" class="img-fluid hideable vis-img" id="heatmap">
+        <img src="{{ url_for('static', filename='img/pca.png') }}" class="img-fluid hideable vis-img" style="display: none;" id="pca">
+        <img src="{{ url_for('static', filename='img/rf_pred_actual.png') }}" class="img-fluid hideable vis-img" style="display:none;" id="prediction-actual">
+        <img src="{{ url_for('static', filename='img/rf_reg_scatter.png') }}" class="img-fluid hideable vis-img" style="display:none;" id="prediction-scatter">
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4 offset-md-1">
-
-    </div>
-    <div class="col-md-4 offset-md-1">
-
+    <div class="col-md-8 offset-md-2">
+        <h3>Dataset</h3>
+        <br>
+        <table class="table table-borderless table-striped">
+            <thead>
+                <td>Bedrooms</td>
+                <td>Bathrooms</td>
+                <td>Floors</td>
+                <td>Waterfront</td>
+                <td>View</td>
+                <td>Zipcode</td>
+                <td>Price</td>
+            </thead>
+            <tbody>
+            {% for item in house_data %}
+                <tr>
+                    <td>{{ item.bedrooms }}</td>
+                    <td>{{ item.bathrooms }}</td>
+                    <td>{{ item.floors }}</td>
+                    <td>{% if item.waterfront %} Yes {% else %} No {% endif %}</td>
+                    <td>{% if item.view %} Yes {% else %} No {% endif %}</td>
+                    <td>{{ item.zipcode }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

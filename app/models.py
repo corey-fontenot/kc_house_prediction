@@ -44,3 +44,14 @@ class DataModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, index=True, nullable=False)
     model = db.Column(db.PickleType, nullable=False)
+
+
+class HouseData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    bedrooms = db.Column(db.Integer, nullable=False)
+    bathrooms = db.Column(db.Float, nullable=False)
+    floors = db.Column(db.Float, nullable=False)
+    waterfront = db.Column(db.Boolean, nullable=False)
+    view = db.Column(db.Boolean, nullable=False)
+    zipcode = db.Column(db.String(5), nullable=False)
+    price = db.Column(db.Float, nullable=False)

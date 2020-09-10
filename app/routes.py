@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegisterForm, EstimateForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Estimate, DataModel
+from app.models import User, Estimate, DataModel, HouseData
 from werkzeug.urls import url_parse
 import datetime
 
@@ -13,7 +13,6 @@ def index():
     form = EstimateForm(request.form)
 
     if form.validate_on_submit():
-        filename = "rf_reg.pkl"  # filename containing the random forest regression prediction model
         input_data = [  # data to be passed to the prediction model
             [
                 form.bedrooms.data,
@@ -58,7 +57,24 @@ def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('estimates'))
 
-    return render_template('dashboard.html', title='Dashboard')
+    rf_model = DataModel().query.filter_by(name='rf_regression').first().model
+    rf_data = {
+        'r2_score': "{:.2f}".format(rf_model.r2_score),
+        'mean_absolute_error': "{:.2f}".format(rf_model.mean_absolute_error),
+        'mean_squared_error': "{:.2f}".format(rf_model.mean_squared_error)
+    }
+
+    pca_model = DataModel().query.filter_by(name='pca').first().model
+    expl_variance_ratio = pca_model.explained_variance_ratio_
+    pca_data = {
+        'pc1_explained_variance': "{:.3f}".format(expl_variance_ratio[0]),
+        'pc2_explained_variance': "{:.3f}".format(expl_variance_ratio[1])
+    }
+
+    house_data = HouseData.query.order_by(HouseData.price).all()
+
+    return render_template('dashboard.html', title='Dashboard', rf_data=rf_data, pca_data=pca_data,
+                           house_data=house_data)
 
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -26,3 +26,4 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ZIPCODES = get_zipcodes()
+    HOUSE_DATA = pd.read_csv('cleaned_data.csv')
