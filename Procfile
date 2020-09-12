@@ -1,0 +1,1 @@
+web: flask db upgrade; gunicorn kc_house_prediction:app
