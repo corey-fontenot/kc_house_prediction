@@ -16,6 +16,24 @@ admin_user.is_admin = True
 db.session.add(admin_user)
 db.session.commit()
 
+model = generate_pca_model()
+
+pca_model = DataModel()
+pca_model.name = 'pca'
+pca_model.model = model
+
+db.session.add(pca_model)
+db.session.commit()
+
+model = generate_rf_model()
+
+rf_model = DataModel()
+rf_model.name = 'rf_regression'
+rf_model.model = model
+
+db.session.add(rf_model)
+db.session.commit()
+
 with open('cleaned_data.csv', 'r') as file:
     reader = csv.reader(file)
     next(reader)
@@ -37,21 +55,3 @@ with open('cleaned_data.csv', 'r') as file:
         db.session.commit()
 
         count += 1
-
-model = generate_pca_model()
-
-pca_model = DataModel()
-pca_model.name = 'pca'
-pca_model.model = model
-
-db.session.add(pca_model)
-db.session.commit()
-
-model = generate_rf_model()
-
-rf_model = DataModel()
-rf_model.name = 'rf_regression'
-rf_model.model = model
-
-db.session.add(rf_model)
-db.session.commit()
