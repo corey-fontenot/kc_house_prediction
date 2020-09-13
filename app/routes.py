@@ -34,7 +34,7 @@ def index():
             'waterfront': form.waterfront.data,
             'view': form.view.data,
             'zipcode': form.zipcode.data,
-            'price': "${:}".format(int(result[0]))
+            'price': "{:}".format(int(result[0]))
         }
         return render_template('results.html', title="Results", result=result)  # load results page
 
