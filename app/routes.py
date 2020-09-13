@@ -59,7 +59,7 @@ def dashboard():
 
     rf_model = DataModel().query.filter_by(name='rf_regression').first().model
     rf_data = {
-        'r2_score': "{:.2f}".format(rf_model.r2_score),
+        'r2_score': "{:.2f}".format(rf_model.score),
         'mean_absolute_error': "{:.2f}".format(rf_model.mean_absolute_error),
         'mean_squared_error': "{:.2f}".format(rf_model.mean_squared_error)
     }
@@ -133,6 +133,7 @@ def register():
         user.username = form.username.data
         user.created_on = cur_date
         user.last_login = cur_date
+        user.is_admin = False
         user.set_password(form.password.data)
 
         db.session.add(user)
